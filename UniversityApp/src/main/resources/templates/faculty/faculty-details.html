@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Faculty details</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Faculty details</h3>
+			<hr>
+			
+			<input type="hidden" th:field="${faculty.id}" />
+			
+			<p class="h5 mb-4">Faculty: <span th:text="${faculty.name}"></span>.</p>
+				
+			<div class="form-inline">
+				<span th:text="${faculty.description}"></span> 
+			</div>
+			
+			<form action="#" th:action="@{/faculty/addGroup(facultyId=${faculty.id})}" method="POST"
+				th:object="${crmObject}" class="form-inline">
+				
+				<select class="form-control  mb-2 mr-2 col-md-4" th:field="*{id}" th:errorclass="fieldError">
+					<option value="0">Groups</option>
+	    			<option th:each="group : ${allGroups}"
+	            			th:value="${group.id}"
+	            			th:text="${group.name}">
+	    			</option>
+				</select>
+							
+				<span th:if="${#fields.hasErrors('*{id}')}"
+					th:errors="*{id}"
+					class="badge badge-danger ml-2 mb-2 col-3"></span>
+			
+				<button type="submit" class="btn btn-info mb-2 col-2">Add group</button>
+			</form>
+			
+			<form action="#" th:action="@{/faculty/addTeacher(facultyId=${faculty.id})}" method="POST"
+				th:object="${crmObject}" class="form-inline">
+				
+				<select class="form-control  mb-2 mr-2 col-md-4" th:field="*{id}" th:errorclass="fieldError">
+					<option value="0">Teachers</option>
+	    			<option th:each="teacher : ${allTeachers}"
+	            			th:value="${teacher.id}"
+	            			th:text="${teacher.firstName} + ' ' + ${teacher.lastName}">
+	    			</option>
+				</select>
+							
+				<span th:if="${#fields.hasErrors('*{id}')}"
+					th:errors="*{id}"
+					class="badge badge-danger ml-2 mb-2 col-3"></span>
+			
+				<button type="submit" class="btn btn-info mb-2 col-2">Add teacher</button>
+			</form>
+			
+			<hr>
+			<h5>Faculty groups</h5>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Group</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr th:each="theGroup : ${myGroups}">
+	
+						<td th:text="${theGroup.name}"/>
+					
+						<td>
+							<a th:href="@{/faculty/groupDetails(groupId=${theGroup.id}, facultyId=${faculty.id})}"
+							   class="btn btn-secondary btn-sm">
+								Details
+							</a>
+										
+							<a th:href="@{/group/deleteFromFaculty(groupId=${theGroup.id}, facultyId=${faculty.id})}"
+							   class="btn btn-danger btn-sm"
+							   onclick="if (!(confirm('Are you sure you want to delete this group from this faculty?'))) return false">
+								Delete from this Faculty
+							</a>
+						</td>	
+					</tr>
+				</tbody>		
+			</table>
+			
+			<hr>
+			<h5>Faculty teachers</h5>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>First name</th>
+						<th>Last name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr th:each="teacher : ${myTeachers}">
+	
+						<td th:text="${teacher.firstName}"/>
+						<td th:text="${teacher.lastName}"/>
+					
+						<td>
+							<a th:href="@{/faculty/teacherDetails(teacherId=${teacher.id}, facultyId=${faculty.id})}"
+							   class="btn btn-secondary btn-sm">
+								Details
+							</a>
+									
+							<a th:href="@{/teacher/deleteFromFaculty(teacherId=${teacher.id}, facultyId=${faculty.id})}"
+							   class="btn btn-danger btn-sm"
+							   onclick="if (!(confirm('Are you sure you want to delete this teacher from this faculty?'))) return false">
+								Delete from this Faculty
+							</a>
+						</td>	
+					</tr>
+				</tbody>		
+			</table>
+		
+			<hr>
+			<a th:href="@{/faculty/list}">Back to Faculties List</a>
+			<hr>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Save Audience</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Save Audience</h3>
+			<hr>
+			<form action="#" th:action="@{/audience/saveAudience}"
+							 th:object="${audience}" method="POST">
+				
+				<input type="hidden" th:field="*{id}" />
+				
+				Audience N	
+				<div style="margin-bottom: 25px" class="form-inline">
+					<input type="number" th:field="*{audienceNumber}" placeholder="Audience" 
+							class="form-control mb-2 col-4" th:errorclass="fieldError" />
+							
+					<span th:if="${#fields.hasErrors('*{audienceNumber}')}"
+						th:errors="*{audienceNumber}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+				
+				Number of seats	
+				<div style="margin-bottom: 25px" class="form-inline">
+					<input type="number" th:field="*{seats}" placeholder="Seats" 
+							class="form-control mb-2 col-4"  th:errorclass="fieldError" />
+							
+					<span th:if="${#fields.hasErrors('*{seats}')}"
+						th:errors="*{seats}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+				
+				Projector
+				<div class="form-inline">	
+					<input type="checkbox" name="Has projector" th:field="*{hasProjector}"
+							class="form-control mb-4 col-4">
+				</div>
+				
+				<button type="submit" class="btn btn-info col-2">Save</button>				
+			</form>
+			<hr>
+			<a th:href="@{/audience/list}">Back to Audience List</a>
+			<hr>
+		</div>
+	</body>
+</html>

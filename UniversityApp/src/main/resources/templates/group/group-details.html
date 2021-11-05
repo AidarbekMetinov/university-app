@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Group details</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Group details</h3>
+			<hr>
+			
+			<input type="hidden" th:field="${group.id}" />
+			
+			<p class="h5 mb-4">Group: <span th:text="${group.name}"></span>.</p>
+			<p class="h7 mb-4">Faculty: <span th:text="${myFaculty}"></span></p>
+			
+			<form action="#" th:action="@{/group/addStudent(groupId=${group.id})}" method="POST"
+				th:object="${crmObject}" class="form-inline">
+				
+				<select class="form-control  mb-2 mr-2 col-md-4" th:field="*{id}" th:errorclass="fieldError">
+					<option value="0">Students</option>
+	    			<option th:each="student : ${allStudents}"
+	            			th:value="${student.id}"
+	            			th:text="${student.firstName} + ' ' + ${student.lastName}">
+	    			</option>
+				</select>
+							
+				<span th:if="${#fields.hasErrors('*{id}')}"
+					th:errors="*{id}"
+					class="badge badge-danger ml-2 mb-2 col-3"></span>
+			
+				<button type="submit" class="btn btn-info mb-2 col-2">Add student</button>
+			</form>
+			
+			<hr>
+			<h5>Group students</h5>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>First name</th>
+						<th>Last name</th>
+						<th>Email</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr th:each="theStudent : ${myStudents}">
+						<td th:text="${theStudent.firstName}"/>
+						<td th:text="${theStudent.lastName}"/>
+						<td th:text="${theStudent.email}"/>
+					
+						<td>
+							<a th:href="@{/student/deleteFromGroup(studentId=${theStudent.id}, groupId=${group.id})}"
+							   class="btn btn-danger btn-sm"
+							   onclick="if (!(confirm('Are you sure you want to delete this student from this group?'))) return false">
+								Delete from this Group
+							</a>
+						</td>	
+					</tr>
+				</tbody>		
+			</table>
+			
+			<hr>
+			<a th:href="@{/group/list}">Back to Groups List</a>
+			<hr>
+		</div>
+	</body>
+</html>

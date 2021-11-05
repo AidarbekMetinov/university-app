@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Audience Directory</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Audience list</h3>
+			<hr>
+			
+			<form action="#" class="form-inline">
+				<a th:href="@{/audience/formForSave}"
+					class="btn btn-primary btn-sm mb-3">
+					Add Audience
+				</a>
+
+				<a th:href="@{/}"
+					class="btn btn-primary btn-sm ml-5 mb-3">
+					Back to main menu
+				</a>									   
+			</form>
+			
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Audience</th>
+						<th>Seats</th>
+						<th>Has projector</th>
+						<th>Option</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="audience : ${audiences}">
+						<td th:text="${audience.audienceNumber}"/>
+						<td th:text="${audience.seats}"/>
+						<td th:text="${audience.hasProjector}"/>
+						
+						<td>
+							<a th:href="@{/audience/formForUpdate(audienceId=${audience.id})}"
+							   class="btn btn-info btn-sm">
+								Update
+							</a>
+											
+							<a th:href="@{/audience/delete(audienceId=${audience.id})}"
+							   class="btn btn-danger btn-sm"
+							   onclick="if (!(confirm('Are you sure you want to delete this audience?'))) return false">
+								Delete
+							</a>
+						</td>
+					</tr>
+				</tbody>		
+			</table>
+			
+			<a th:href="@{/}"
+				class="btn btn-primary btn-sm mb-3">
+				Back to main menu
+			</a>
+			<hr>
+		</div>
+	</body>
+</html>

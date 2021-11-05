@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Teacher details</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Teacher details</h3>
+			<hr>
+			
+			<p class="h5 mb-4">Teacher: <span th:text="${teacher.firstName} + ' ' + ${teacher.lastName}"></span>.</p>
+			
+			<hr>
+			<h5>Teacher courses</h5>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Course</th>
+						<th>Description</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr th:each="theCourse : ${myCourses}">
+						<td th:text="${theCourse.name}"/>
+						<td th:text="${theCourse.description}"/>
+					</tr>
+				</tbody>		
+			</table>
+		<hr>
+		<a th:href="@{/faculty/details(facultyId=${facultyId})}">Back to Faculty details</a>
+		<hr>
+		</div>
+	</body>
+</html>

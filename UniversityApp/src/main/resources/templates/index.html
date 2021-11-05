@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<title>University</title>
+			
+		<meta charset="utf-8">
+	   	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	</head>
+
+	<body>
+		<div class="container">
+			<hr>
+			<h3>University</h3>
+			<hr>
+			
+			<a th:href="@{/faculty/list}"
+				class="btn btn-primary btn-sm mb-1 mt-1">
+				Faculties
+			</a>
+			
+			<a th:href="@{/lecture/list}"
+				class="btn btn-primary btn-sm ml-3 mb-1 mt-1">
+				Lectures
+			</a>
+			
+			<a th:href="@{/student/list}"
+				class="btn btn-primary btn-sm ml-3 mb-1 mt-1">
+				Students
+			</a>
+			
+			<a th:href="@{/group/list}"
+				class="btn btn-primary btn-sm ml-3 mb-1 mt-1">
+				Groups
+			</a>
+			
+			<a th:href="@{/audience/list}"
+				class="btn btn-primary btn-sm ml-3 mb-1 mt-1">
+				Audiences
+			</a>
+			
+			<a th:href="@{/course/list}"
+				class="btn btn-primary btn-sm ml-3 mb-1 mt-1">
+				Courses
+			</a>
+			
+			<a th:href="@{/teacher/list}"
+				class="btn btn-primary btn-sm ml-3 mb-1 mt-1">
+				Teachers
+			</a>
+			
+			<hr>
+			<a th:href="@{/refresh}"
+				class="btn btn-warning btn-sm mb-1 mt-1"
+				onclick="if (!(confirm('Are you sure you want to set default database data?'))) return false">
+				Refresh database
+			</a>
+		</div>	
+	</body>
+</html>

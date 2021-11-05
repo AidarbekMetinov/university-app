@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Lecture details</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Lecture details</h3>
+			<hr>
+			
+			<input type="hidden" th:field="${lecture.id}" />
+			
+			<p class="h5 mb-4">Lecture: <span th:text="${lecture.course}"></span>.</p>
+			<p class="h7 mb-4">Teacher: <span th:text="${lecture.teacher}"></span></p>
+			<p class="h7 mb-4">Audience: <span th:text="${lecture.audience}"></span></p>
+			<p class="h7 mb-4">Lecture starts: <span th:text="${lecture.dateTime}"></span></p>
+			
+			<form action="#" th:action="@{/lecture/addGroup(lectureId=${lecture.id})}" method="POST"
+				th:object="${crmObject}" class="form-inline">
+			
+				<select class="form-control mb-2 mr-2 col-md-4" th:field="*{id}" th:errorclass="fieldError">
+					<option value="0">Select group</option>
+	    			<option th:each="group : ${allGroups}"
+	            			th:value="${group.id}"
+	            			th:text="${group.name}">
+	    			</option>
+				</select>
+							
+				<span th:if="${#fields.hasErrors('*{id}')}"
+					th:errors="*{id}"
+					class="badge badge-danger ml-2 mb-2 col-3"></span>
+			
+				<button type="submit" class="btn btn-info mb-2 col-2">Add group to lecture</button>
+			</form>
+			
+			<hr>
+			<h5>Lecture groups</h5>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Group</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr th:each="theGroup : ${myGroups}">
+						<td th:text="${theGroup.name}"/>
+					
+						<td>				
+							<a th:href="@{/group/deleteFromLecture(lectureId=${lecture.id}, groupId=${theGroup.id})}"
+							   class="btn btn-danger btn-sm"
+							   onclick="if (!(confirm('Are you sure you want to delete this group from this lecture?'))) return false">
+								Delete from this Lecture
+							</a>
+						</td>	
+					</tr>
+				</tbody>		
+			</table>
+		<hr>
+		<a th:href="@{/lecture/list}">Back to Lecture List</a>
+		<hr>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+	
+		<title>Save Lecture</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Save Lecture</h3>
+			<hr>
+			
+			<form action="#" th:action="@{/lecture/saveLecture}"
+							 th:object="${lecture}" method="POST">
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="form-inline">
+					<select class="form-control mb-4 col-md-4" th:field="*{audienceId}" th:errorclass="fieldError">
+						<option value="0">Select audience</option>
+		    			<option th:each="audience : ${audiences}"
+		            			th:value="${audience.id}"
+		            			th:text="'Audience: ' + ${audience.audienceNumber}">
+		    			</option>
+					</select>
+							
+					<span th:if="${#fields.hasErrors('*{audienceId}')}"
+						th:errors="*{audienceId}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+				
+				<div class="form-inline">
+					<select class="form-control mb-4 col-md-4" th:field="*{teacherId}" th:errorclass="fieldError">
+						<option value="0">Select teacher</option>
+		    			<option th:each="teacher : ${teachers}"
+		            			th:value="${teacher.id}"
+		            			th:text="'Teacher: ' + ${teacher.firstName} + ' ' + ${teacher.lastName}">
+		    			</option>
+					</select>
+							
+					<span th:if="${#fields.hasErrors('*{teacherId}')}"
+						th:errors="*{teacherId}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+				
+				<div class="form-inline">
+					<select class="form-control mb-4 col-md-4" th:field="*{courseId}" th:errorclass="fieldError">
+						<option value="0">Select course</option>
+		    			<option th:each="course : ${courses}"
+		            			th:value="${course.id}"
+		            			th:text="'Course: ' + ${course.getName()}">
+		    			</option>
+					</select>
+							
+					<span th:if="${#fields.hasErrors('*{courseId}')}"
+						th:errors="*{courseId}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+				
+				<div class="form-inline">
+					<input type="datetime" th:field="*{dateTime}"
+							class="form-control mb-4 col-md-4" placeholder="Datetime" th:errorclass="fieldError" />
+							
+					<span th:if="${#fields.hasErrors('*{dateTime}')}"
+						th:errors="*{dateTime}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+					
+				<button type="submit" class="btn btn-info col-2">Save</button>
+			</form>
+		
+			<hr>
+			<a th:href="@{/lecture/list}">Back to Lectures List</a>
+			<hr>
+		</div>
+	</body>
+</html>

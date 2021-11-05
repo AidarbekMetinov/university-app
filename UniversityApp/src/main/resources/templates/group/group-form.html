@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+	
+		<title>Save Group</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Save Group</h3>
+			<hr>
+			
+			<form action="#" th:action="@{/group/saveGroup}"
+							 th:object="${group}" method="POST">
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="form-inline">
+					<input type="text" th:field="*{name}"
+							class="form-control mb-4 col-4" placeholder="Name" th:errorclass="fieldError" />
+							
+					<span th:if="${#fields.hasErrors('*{name}')}"
+						th:errors="*{name}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+				
+				<div class="form-inline">
+					<select class="form-control mb-4 col-md-4" th:field="*{facultyId}"  th:errorclass="fieldError">
+						<option value="0">Select faculty</option>
+		    			<option th:each="faculty : ${faculties}"
+		            			th:value="${faculty.id}"
+		            			th:text="${faculty}">
+		    			</option>
+					</select>
+					
+					<span th:if="${#fields.hasErrors('*{facultyId}')}"
+						th:errors="*{facultyId}"
+						class="badge badge-danger ml-2 mb-2 col-3"></span>
+				</div>
+											
+				<button type="submit" class="btn btn-info col-2">Save</button>
+			</form>
+		
+			<hr>
+			<a th:href="@{/group/list}">Back to Groups List</a>
+			<hr>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,13 @@
+<configuration>
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <Pattern>%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n</Pattern>
+    </encoder>
+  </appender>
+  
+  <logger name="ua.com.foxminded" level="INFO"/>
+
+  <root level="INFO">
+    <appender-ref ref="stdout" />
+  </root>
+</configuration>

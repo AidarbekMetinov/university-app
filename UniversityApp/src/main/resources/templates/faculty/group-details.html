@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	
+		<title>Group details</title>
+	</head>
+	<body>
+		<div class="container">
+			<hr>
+			<h3>Group details</h3>
+			<hr>
+			
+			<input type="hidden" th:field="${group.id}" />
+			
+			<p class="h5 mb-4">Group: <span th:text="${group.name}"></span>.</p>
+			<p class="h7 mb-4">Faculty: <span th:text="${myFaculty}"></span></p>
+			
+			<hr>
+			<h5>Group students</h5>
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>First name</th>
+						<th>Last name</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+			
+				<tbody>
+					<tr th:each="theStudent : ${myStudents}">
+						<td th:text="${theStudent.firstName}"/>
+						<td th:text="${theStudent.lastName}"/>
+						<td th:text="${theStudent.email}"/>	
+					</tr>
+				</tbody>		
+			</table>
+			
+			<hr>
+			<a th:href="@{/faculty/details(facultyId=${facultyId})}">Back to Faculty details</a>
+			<hr>
+		</div>
+	</body>
+</html>
