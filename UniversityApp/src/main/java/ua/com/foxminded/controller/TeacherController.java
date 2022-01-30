@@ -1,5 +1,27 @@
 package ua.com.foxminded.controller;
 
+import static ua.com.foxminded.Constants.DELETE;
+import static ua.com.foxminded.Constants.DELETE_ALL;
+import static ua.com.foxminded.Constants.DETAILS;
+import static ua.com.foxminded.Constants.FACULTY;
+import static ua.com.foxminded.Constants.FIRST_NAME;
+import static ua.com.foxminded.Constants.FORM;
+import static ua.com.foxminded.Constants.GET_MAP;
+import static ua.com.foxminded.Constants.INCOMMING_ERROR;
+import static ua.com.foxminded.Constants.LAST_NAME;
+import static ua.com.foxminded.Constants.LIST;
+import static ua.com.foxminded.Constants.POST_MAP;
+import static ua.com.foxminded.Constants.REDIRECT;
+import static ua.com.foxminded.Constants.SAVE_FORM;
+import static ua.com.foxminded.Constants.SAVE_TEACHER;
+import static ua.com.foxminded.Constants.TEACHER;
+import static ua.com.foxminded.Constants.UPDATE_FORM;
+import static ua.com.foxminded.Constants._COURSE_ID;
+import static ua.com.foxminded.Constants._FACULTY_ID;
+import static ua.com.foxminded.Constants._TEACHER;
+import static ua.com.foxminded.Constants._TEACHERS;
+import static ua.com.foxminded.Constants._TEACHER_ID;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -23,182 +45,182 @@ import ua.com.foxminded.service.TeacherService;
 
 @Slf4j
 @Controller
-@RequestMapping("/teacher")
+@RequestMapping(TEACHER)
 @RequiredArgsConstructor
 public class TeacherController {
 
 	private final TeacherService teacherService;
 	private final CourseService courseService;
 
-	@GetMapping("/list")
+	@GetMapping(LIST)
 	public String findAll(Model model) {
 
-		log.debug("Get mapping:/teacher/list");
-		model.addAttribute("teachers", teacherService.findAll());
+		log.debug(GET_MAP + TEACHER + LIST);
+		model.addAttribute(_TEACHERS, teacherService.findAll());
 
-		return "teacher/list-teachers";
+		return TEACHER + LIST;
 	}
 
-	@GetMapping("/formForSave")
+	@GetMapping(SAVE_FORM)
 	public String save(Model model) {
 
-		log.debug("Get mapping:/teacher/formForSave");
+		log.debug(GET_MAP + TEACHER + SAVE_FORM);
 		Teacher teacher = new Teacher();
 		teacher.setId(null);
 
-		model.addAttribute("teacher", teacher);
+		model.addAttribute(_TEACHER, teacher);
 
-		return "teacher/teacher-form";
+		return TEACHER + FORM;
 	}
 
-	@GetMapping("/formForUpdate")
-	public String updateTeacher(@RequestParam("teacherId") Integer id, Model model) {
+	@GetMapping(UPDATE_FORM)
+	public String updateTeacher(@RequestParam(_TEACHER_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/teacher/formForUpdate");
+		log.debug(GET_MAP + TEACHER + UPDATE_FORM);
 		if (id != null) {
-			model.addAttribute("teacher", teacherService.findById(id));
-			return "teacher/teacher-form";
+			model.addAttribute(_TEACHER, teacherService.findById(id));
+			return TEACHER + FORM;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/details")
-	public String showDetails(@RequestParam("teacherId") Integer id, Model model) {
+	@GetMapping(DETAILS)
+	public String showDetails(@RequestParam(_TEACHER_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/teacher/details");
+		log.debug(GET_MAP + TEACHER + DETAILS);
 		if (id != null) {
 			Teacher teacher = teacherService.findById(id);
-			model.addAttribute("teacher", teacher);
+			model.addAttribute(_TEACHER, teacher);
 			model.addAttribute("myCourses", teacher.getCourses());
 			model.addAttribute("allCourses", courseService.findAll());
 			model.addAttribute("crmObject", new CrmObject());
-			return "teacher/teacher-details";
+			return TEACHER + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@PostMapping("/saveTeacher")
-	public String saveTeacher(@Valid @ModelAttribute("teacher") Teacher teacher, BindingResult theBindingResult,
+	@PostMapping(SAVE_TEACHER)
+	public String saveTeacher(@Valid @ModelAttribute(_TEACHER) Teacher teacher, BindingResult theBindingResult,
 			Model model) {
-		log.debug("Post mapping:/teacher/saveTeacher");
+		log.debug(POST_MAP + TEACHER + SAVE_TEACHER);
 
 		if (theBindingResult.hasErrors()) {
-			model.addAttribute("teacher", teacher);
-			return "teacher/teacher-form";
+			model.addAttribute(_TEACHER, teacher);
+			return TEACHER + FORM;
 		}
 		if (teacher != null) {
 			teacherService.saveOrUpdate(teacher);
-			return "redirect:/teacher/list";
+			return REDIRECT + TEACHER + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@PostMapping("/addCourse")
-	public String addCourseToTeacher(@RequestParam("teacherId") Integer teacherId,
+	public String addCourseToTeacher(@RequestParam(_TEACHER_ID) Integer teacherId,
 			@Valid @ModelAttribute("crmObject") CrmObject crmObject, Model model, RedirectAttributes redirectAttributes,
 			BindingResult theBindingResult) {
-		log.debug("Get mapping:/teacher/addCourse");
+		log.debug(GET_MAP + TEACHER + "/addCourse");
 
 		if (theBindingResult.hasErrors()) {
-			redirectAttributes.addAttribute("teacherId", teacherId);
-			return "redirect:/teacher/details";
+			redirectAttributes.addAttribute(_TEACHER_ID, teacherId);
+			return REDIRECT + TEACHER + DETAILS;
 		}
 		if (teacherId != null && crmObject != null) {
 			Integer courseId = crmObject.getId();
 
 			teacherService.addCourseToTeacher(teacherId, courseId);
 
-			redirectAttributes.addAttribute("teacherId", teacherId);
-			return "redirect:/teacher/details";
+			redirectAttributes.addAttribute(_TEACHER_ID, teacherId);
+			return REDIRECT + TEACHER + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/delete")
-	public String deleteTeacher(@RequestParam("teacherId") Integer id) {
+	@GetMapping(DELETE)
+	public String deleteTeacher(@RequestParam(_TEACHER_ID) Integer id) {
 
-		log.debug("Get mapping:/teacher/delete");
+		log.debug(GET_MAP + TEACHER + DELETE);
 		if (id != null) {
 			teacherService.deleteById(id);
-			return "redirect:/teacher/list";
+			return REDIRECT + TEACHER + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/deleteCourse")
-	public String deleteFromLesson(@RequestParam("teacherId") Integer teacherId,
-			@RequestParam("courseId") Integer courseId, RedirectAttributes redirectAttributes) {
+	public String deleteCourseFromTeacher(@RequestParam(_TEACHER_ID) Integer teacherId,
+			@RequestParam(_COURSE_ID) Integer courseId, RedirectAttributes redirectAttributes) {
 
-		log.debug("Get mapping:/teacher/deleteCourse");
+		log.debug(GET_MAP + TEACHER + "/deleteCourse");
 		if (teacherId != null && courseId != null) {
 			teacherService.deleteCourseFromTeacher(teacherId, courseId);
 
-			redirectAttributes.addAttribute("teacherId", teacherId);
-			return "redirect:/teacher/details";
+			redirectAttributes.addAttribute(_TEACHER_ID, teacherId);
+			return REDIRECT + TEACHER + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/deleteFromFaculty")
-	public String deleteFromFaculty(@RequestParam("teacherId") Integer teacherId,
-			@RequestParam("facultyId") Integer facultyId, RedirectAttributes redirectAttributes) {
+	public String deleteFromFaculty(@RequestParam(_TEACHER_ID) Integer teacherId,
+			@RequestParam(_FACULTY_ID) Integer facultyId, RedirectAttributes redirectAttributes) {
 
-		log.debug("Get mapping:/teacher/deleteFromFaculty");
+		log.debug(GET_MAP + TEACHER + "/deleteFromFaculty");
 		if (teacherId != null && facultyId != null) {
 			teacherService.deleteTeacherFromFaculty(teacherId, facultyId);
-			redirectAttributes.addAttribute("facultyId", facultyId);
-			return "redirect:/faculty/details";
+			redirectAttributes.addAttribute(_FACULTY_ID, facultyId);
+			return REDIRECT + FACULTY + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/deleteAll")
+	@GetMapping(DELETE_ALL)
 	public String deleteAll() {
 
-		log.debug("Get mapping:/teacher/deleteAll");
+		log.debug(GET_MAP + TEACHER + DELETE_ALL);
 		teacherService.deleteAll();
 
-		return "redirect:/teacher/list";
+		return REDIRECT + TEACHER + LIST;
 	}
 
 	@GetMapping("/searchByFirstName")
-	public String searchByFirstName(@RequestParam("firstName") String name, Model model) {
+	public String searchByFirstName(@RequestParam(FIRST_NAME) String name, Model model) {
 
-		log.debug("Get mapping:/teacher/searchByFirstName");
+		log.debug(GET_MAP + TEACHER + "/searchByFirstName");
 		if (name != null && !name.trim().isEmpty()) {
 			List<Teacher> teachers = teacherService.searchByFirstName(name);
 			if (teachers.isEmpty()) {
-				return "redirect:/teacher/list";
+				return REDIRECT + TEACHER + LIST;
 			} else {
-				model.addAttribute("teachers", teachers);
-				return "teacher/list-teachers";
+				model.addAttribute(_TEACHERS, teachers);
+				return TEACHER + LIST;
 			}
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/searchByLastName")
-	public String searchByLastName(@RequestParam("lastName") String name, Model model) {
+	public String searchByLastName(@RequestParam(LAST_NAME) String name, Model model) {
 
-		log.debug("Get mapping:/student/searchByLastName");
+		log.debug(GET_MAP + TEACHER + "/searchByLastName");
 		if (name != null && !name.trim().isEmpty()) {
 			List<Teacher> teachers = teacherService.searchByLastName(name);
 			if (teachers.isEmpty()) {
-				return "redirect:/teacher/list";
+				return REDIRECT + TEACHER + LIST;
 			} else {
-				model.addAttribute("teachers", teachers);
-				return "teacher/list-teachers";
+				model.addAttribute(_TEACHERS, teachers);
+				return TEACHER + LIST;
 			}
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 }

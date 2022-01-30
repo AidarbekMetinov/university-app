@@ -19,4 +19,6 @@ public interface GroupService extends UniversityService<Group, Integer> {
 	void deleteGroupFromLecture(Integer groupId, Integer lectureId);
 
 	void addStudent(Integer groupId, Integer studentId);
+
+	List<Group> findByFacultyId(Integer id);
 }

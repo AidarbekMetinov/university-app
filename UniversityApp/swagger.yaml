@@ -1,0 +1,2319 @@
+openapi: 3.0.1
+info:
+  title: University API
+  description: This is a university api documentation
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: Teacher
+  description: the teacher API
+- name: Faculty
+  description: the faculty API
+- name: Course
+  description: the course API
+- name: Student
+  description: the student API
+- name: Audience
+  description: the audience API
+- name: Group
+  description: the group API
+- name: Lecture
+  description: the lecture API
+paths:
+  /group/search:
+    get:
+      operationId: search
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/details:
+    get:
+      operationId: showDetails
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/deleteAll:
+    get:
+      operationId: deleteAll
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/student:
+    get:
+      tags:
+      - Student
+      summary: Finds students
+      operationId: all_6
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+    put:
+      tags:
+      - Student
+      summary: Updates existing student
+      operationId: update_1
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Student'
+    post:
+      tags:
+      - Student
+      summary: Saves new student
+      operationId: save_12
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Student'
+    delete:
+      tags:
+      - Student
+      summary: Deletes students
+      operationId: deleteAll_1
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/group/{groupId}/addStudent/{studentId}:
+    put:
+      tags:
+      - Group
+      summary: "Adds student by = {studentId} to group by id = {groupId}"
+      operationId: addStudent
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: studentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/teacher:
+    get:
+      tags:
+      - Teacher
+      summary: Finds teachers
+      operationId: all_2
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+    put:
+      tags:
+      - Teacher
+      summary: Updates existing teacher
+      operationId: update_4
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Teacher'
+    post:
+      tags:
+      - Teacher
+      summary: Saves new teacher
+      operationId: save_10
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Teacher'
+    delete:
+      tags:
+      - Teacher
+      summary: Deletes teachers
+      operationId: deleteAll_2
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/formForUpdate:
+    get:
+      operationId: updateLecture
+      parameters:
+      - name: lectureId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/delete:
+    get:
+      operationId: deleteLecture
+      parameters:
+      - name: lectureId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/delete:
+    get:
+      operationId: deleteCourse
+      parameters:
+      - name: courseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/list:
+    get:
+      operationId: findAll
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/delete:
+    get:
+      operationId: deleteStudent
+      parameters:
+      - name: studentId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/teacher/{teacherId}/addCourse/{courseId}:
+    put:
+      tags:
+      - Teacher
+      summary: "Adds course by = {courseId} to teacher by id = {teacherId}"
+      operationId: addCourse
+      parameters:
+      - name: teacherId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/audience/{id}:
+    get:
+      tags:
+      - Audience
+      summary: Finds audience by id
+      operationId: one
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Audience'
+    delete:
+      tags:
+      - Audience
+      summary: Deletes audience by id
+      operationId: deleteOne_6
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/deleteAll:
+    get:
+      operationId: deleteAll_3
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /audience/delete:
+    get:
+      operationId: deleteAudience
+      parameters:
+      - name: audienceId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /audience/list:
+    get:
+      operationId: findAll_1
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/faculty/{facultyId}/addGroup/{groupId}:
+    put:
+      tags:
+      - Faculty
+      summary: "Adds group by = {groupId} to faculty by id = {facultyId}"
+      operationId: addGroup
+      parameters:
+      - name: facultyId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/saveFaculty:
+    post:
+      operationId: saveFaculty
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/saveGroup:
+    post:
+      operationId: saveGroup
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/group:
+    get:
+      tags:
+      - Group
+      summary: Finds groups
+      operationId: all_5
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+    put:
+      tags:
+      - Group
+      summary: Updates existing group
+      operationId: update
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Group'
+    post:
+      tags:
+      - Group
+      summary: Saves new group
+      operationId: save
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Group'
+    delete:
+      tags:
+      - Group
+      summary: Deletes groups
+      operationId: deleteAll_5
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/lecture/{lectureId}/addGroup/{groupId}:
+    put:
+      tags:
+      - Lecture
+      summary: "Adds group by = {groupId} to lecture by id = {lectureId}"
+      operationId: addGroup_1
+      parameters:
+      - name: lectureId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/delete:
+    get:
+      operationId: deleteFaculty
+      parameters:
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/formForSave:
+    get:
+      operationId: save_1
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/deleteCourse:
+    get:
+      operationId: deleteCourseFromTeacher
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: courseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/addGroup:
+    post:
+      operationId: addGroup_2
+      parameters:
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CrmObject'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/group/{id}:
+    get:
+      tags:
+      - Group
+      summary: Finds group by id
+      operationId: one_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Group'
+    delete:
+      tags:
+      - Group
+      summary: Deletes group by id
+      operationId: deleteOne_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/teacher/{id}:
+    get:
+      tags:
+      - Teacher
+      summary: Finds teacher by id
+      operationId: one_5
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Teacher'
+    delete:
+      tags:
+      - Teacher
+      summary: Deletes teacher by id
+      operationId: deleteOne
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/details:
+    get:
+      operationId: showDetails_1
+      parameters:
+      - name: lectureId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/saveCourse:
+    post:
+      operationId: saveCourse
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/course:
+    get:
+      tags:
+      - Course
+      summary: Finds courses
+      operationId: all
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+    put:
+      tags:
+      - Course
+      summary: Updates existing course
+      operationId: update_5
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Course'
+    post:
+      tags:
+      - Course
+      summary: Saves new course
+      operationId: save_2
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Course'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Course'
+    delete:
+      tags:
+      - Course
+      summary: Deletes courses
+      operationId: deleteAll_7
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/faculty:
+    get:
+      tags:
+      - Faculty
+      summary: Finds faculties
+      operationId: all_3
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+    put:
+      tags:
+      - Faculty
+      summary: Updates existing faculty
+      operationId: update_6
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Faculty'
+    post:
+      tags:
+      - Faculty
+      summary: Saves new faculty
+      operationId: save_3
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Faculty'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Faculty'
+    delete:
+      tags:
+      - Faculty
+      summary: Deletes faculties
+      operationId: deleteAll_4
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/student/searchByFirstName/{firstName}:
+    get:
+      tags:
+      - Student
+      summary: Finds students by first name
+      operationId: searchByFirstName
+      parameters:
+      - name: firstName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+  /api/lecture/{id}:
+    get:
+      tags:
+      - Lecture
+      summary: Finds lecture by id
+      operationId: one_2
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Lecture'
+    delete:
+      tags:
+      - Lecture
+      summary: Deletes lecture by id
+      operationId: deleteOne_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/deleteFromFaculty:
+    get:
+      operationId: deleteFromFaculty
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/lecture/search/{dateTime}:
+    get:
+      tags:
+      - Lecture
+      summary: Finds lectures by date
+      operationId: searchByName
+      parameters:
+      - name: dateTime
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecture'
+  /api/faculty/{id}:
+    get:
+      tags:
+      - Faculty
+      summary: Finds faculty by id
+      operationId: one_4
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Faculty'
+    delete:
+      tags:
+      - Faculty
+      summary: Deletes faculty by id
+      operationId: deleteOne_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/lecture:
+    get:
+      tags:
+      - Lecture
+      summary: Finds lectures
+      operationId: all_1
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lecture'
+    put:
+      tags:
+      - Lecture
+      summary: Updates existing lecture
+      operationId: update_3
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Lecture'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Lecture'
+    post:
+      tags:
+      - Lecture
+      summary: Saves new lecture
+      operationId: save_5
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Lecture'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Lecture'
+    delete:
+      tags:
+      - Lecture
+      summary: Deletes lectures
+      operationId: deleteAll_6
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/course/search/{name}:
+    get:
+      tags:
+      - Course
+      summary: Finds courses by name
+      operationId: searchByName_1
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+  /student/searchByFirstName:
+    get:
+      operationId: searchByFirstName_1
+      parameters:
+      - name: firstName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/formForSave:
+    get:
+      operationId: save_4
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/details:
+    get:
+      operationId: showDetails_2
+      parameters:
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/searchByLastName:
+    get:
+      operationId: searchByLastName
+      parameters:
+      - name: lastName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/groupDetails:
+    get:
+      operationId: showGroupDetails
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/formForSave:
+    get:
+      operationId: save_6
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/student/{id}:
+    get:
+      tags:
+      - Student
+      summary: Finds student by id
+      operationId: one_3
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Student'
+    delete:
+      tags:
+      - Student
+      summary: Deletes student by id
+      operationId: deleteOne_4
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/formForSave:
+    get:
+      operationId: save_7
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/formForUpdate:
+    get:
+      operationId: updateFaculty
+      parameters:
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/search:
+    get:
+      operationId: search_1
+      parameters:
+      - name: dateTime
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/formForUpdate:
+    get:
+      operationId: updateTeacher
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/formForUpdate:
+    get:
+      operationId: updateCourse
+      parameters:
+      - name: courseId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/delete:
+    get:
+      operationId: deleteTeacher
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/list:
+    get:
+      operationId: findAll_2
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/list:
+    get:
+      operationId: findAll_3
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/formForSave:
+    get:
+      operationId: save_8
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/deleteFromLecture:
+    get:
+      operationId: deleteFromLecture
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: lectureId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/group/{groupId}/deleteFromFaculty:
+    delete:
+      tags:
+      - Group
+      summary: Deletes group from its faculty
+      operationId: deleteFromFaculty_1
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/deleteFromFaculty:
+    get:
+      operationId: deleteFromFaculty_2
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/formForUpdate:
+    get:
+      operationId: updateStudent
+      parameters:
+      - name: studentId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /audience/formForSave:
+    get:
+      operationId: save_9
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/search:
+    get:
+      operationId: search_2
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/faculty/{facultyId}/addTeacher/{teacherId}:
+    put:
+      tags:
+      - Faculty
+      summary: "Adds teacher by = {teacherId} to faculty by id = {facultyId}"
+      operationId: addTeacher
+      parameters:
+      - name: facultyId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: teacherId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/formForUpdate:
+    get:
+      operationId: updateGroup
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/audience:
+    get:
+      tags:
+      - Audience
+      summary: Finds audiences
+      operationId: all_4
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Audience'
+    put:
+      tags:
+      - Audience
+      summary: Updates existing audience
+      operationId: update_2
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Audience'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Audience'
+    post:
+      tags:
+      - Audience
+      summary: Saves new audience
+      operationId: save_11
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Audience'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Audience'
+    delete:
+      tags:
+      - Audience
+      summary: Deletes audiences
+      operationId: deleteAll_8
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/group/{groupId}/fromLecture/{lectureId}:
+    delete:
+      tags:
+      - Group
+      summary: "Deletes group by id = {groupId} from lecture by id = {lectureId}"
+      operationId: deleteFromLecture_1
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: lectureId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/search:
+    get:
+      operationId: search_3
+      parameters:
+      - name: name
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/saveLecture:
+    post:
+      operationId: saveLecture
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CrmLecture'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/teacherDetails:
+    get:
+      operationId: showTeacherDetails
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/deleteFromGroup:
+    get:
+      operationId: deleteFromGroup
+      parameters:
+      - name: studentId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/searchByFirstName:
+    get:
+      operationId: searchByFirstName_2
+      parameters:
+      - name: firstName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/course/{id}:
+    get:
+      tags:
+      - Course
+      summary: Finds course by id
+      operationId: one_6
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Course'
+    delete:
+      tags:
+      - Course
+      summary: Deletes course by id
+      operationId: deleteOne_5
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /audience/formForUpdate:
+    get:
+      operationId: updateAudience
+      parameters:
+      - name: audienceId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/delete:
+    get:
+      operationId: deleteGroup
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/saveStudent:
+    post:
+      operationId: saveStudent
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Student'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /audience/saveAudience:
+    post:
+      operationId: saveAudience
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Audience'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/addCourse:
+    post:
+      operationId: addCourseToTeacher
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CrmObject'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/list:
+    get:
+      operationId: findAll_4
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/teacher/searchByLastName/{lastName}:
+    get:
+      tags:
+      - Teacher
+      summary: Finds teachers by last name
+      operationId: searchByLastName_1
+      parameters:
+      - name: lastName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+  /api/teacher/{teacherId}/fromFaculty/{facultyId}:
+    delete:
+      tags:
+      - Teacher
+      summary: "Deletes teacher by id = {teacherId} from faculty by id = {facultyId}"
+      operationId: deleteFromFaculty_3
+      parameters:
+      - name: teacherId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: facultyId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/group/search/{name}:
+    get:
+      tags:
+      - Group
+      summary: Finds groups by name
+      operationId: searchByName_2
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+  /api/faculty/search/{name}:
+    get:
+      tags:
+      - Faculty
+      summary: Finds faculties by name
+      operationId: searchByName_3
+      parameters:
+      - name: name
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Faculty'
+  /audience/deleteAll:
+    get:
+      operationId: deleteAll_9
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/deleteAll:
+    get:
+      operationId: deleteAll_10
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/student/searchByLastName/{lastName}:
+    get:
+      tags:
+      - Student
+      summary: Finds students by last name
+      operationId: searchByLastName_2
+      parameters:
+      - name: lastName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+  /lecture/deleteAll:
+    get:
+      operationId: deleteAll_11
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/student/{studentId}/deleteFromGroup:
+    delete:
+      tags:
+      - Student
+      summary: Deletes student from its faculty
+      operationId: deleteFromGroup_1
+      parameters:
+      - name: studentId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/details:
+    get:
+      operationId: showDetails_3
+      parameters:
+      - name: teacherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/addGroup:
+    post:
+      operationId: addGroupToLecture
+      parameters:
+      - name: lectureId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CrmObject'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /lecture/list:
+    get:
+      operationId: findAll_5
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /group/addStudent:
+    post:
+      operationId: addStudent_1
+      parameters:
+      - name: groupId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CrmObject'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/saveTeacher:
+    post:
+      operationId: saveTeacher
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /teacher/formForSave:
+    get:
+      operationId: save_13
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/teacher/searchByFirstName/{firstName}:
+    get:
+      tags:
+      - Teacher
+      summary: Finds teachers by first name
+      operationId: searchByFirstName_3
+      parameters:
+      - name: firstName
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Teacher'
+  /teacher/deleteAll:
+    get:
+      operationId: deleteAll_12
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/searchByLastName:
+    get:
+      operationId: searchByLastName_3
+      parameters:
+      - name: lastName
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/teacher/{teacherId}/course/{courseId}:
+    delete:
+      tags:
+      - Teacher
+      summary: "Deletes course by id = {courseId} from teacher by id = {teacherId}"
+      operationId: deleteCourseFromTeacher_1
+      parameters:
+      - name: teacherId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: courseId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /student/deleteAll:
+    get:
+      operationId: deleteAll_13
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /course/list:
+    get:
+      operationId: findAll_6
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+  /faculty/addTeacher:
+    post:
+      operationId: addTeacher_1
+      parameters:
+      - name: facultyId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CrmObject'
+      responses:
+        "200":
+          description: default response
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    Audience:
+      required:
+      - audienceNumber
+      - seats
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        audienceNumber:
+          maximum: 999
+          minimum: 1
+          type: integer
+          format: int32
+        seats:
+          maximum: 200
+          minimum: 10
+          type: integer
+          format: int32
+        hasProjector:
+          type: boolean
+    Faculty:
+      required:
+      - description
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          maxLength: 2147483647
+          minLength: 3
+          type: string
+        description:
+          maxLength: 2147483647
+          minLength: 10
+          type: string
+    Group:
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          maxLength: 2147483647
+          minLength: 2
+          type: string
+    CrmObject:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          minimum: 1
+          type: integer
+          format: int32
+    Course:
+      required:
+      - description
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          maxLength: 2147483647
+          minLength: 3
+          type: string
+        description:
+          maxLength: 2147483647
+          minLength: 10
+          type: string
+    Student:
+      required:
+      - email
+      - firstName
+      - lastName
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        firstName:
+          maxLength: 2147483647
+          minLength: 2
+          type: string
+        lastName:
+          maxLength: 2147483647
+          minLength: 2
+          type: string
+        email:
+          type: string
+    Lecture:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        course:
+          $ref: '#/components/schemas/Course'
+        audience:
+          $ref: '#/components/schemas/Audience'
+        teacher:
+          $ref: '#/components/schemas/Teacher'
+        dateTime:
+          type: string
+          format: date-time
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+    Teacher:
+      required:
+      - firstName
+      - lastName
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        firstName:
+          maxLength: 2147483647
+          minLength: 2
+          type: string
+        lastName:
+          maxLength: 2147483647
+          minLength: 2
+          type: string
+    CrmLecture:
+      required:
+      - audienceId
+      - courseId
+      - dateTime
+      - teacherId
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        courseId:
+          minimum: 1
+          type: integer
+          format: int32
+        audienceId:
+          minimum: 1
+          type: integer
+          format: int32
+        teacherId:
+          minimum: 1
+          type: integer
+          format: int32
+        dateTime:
+          type: string

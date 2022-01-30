@@ -1,5 +1,29 @@
 package ua.com.foxminded.controller;
 
+import static ua.com.foxminded.Constants.DELETE;
+import static ua.com.foxminded.Constants.DELETE_ALL;
+import static ua.com.foxminded.Constants.DETAILS;
+import static ua.com.foxminded.Constants.FACULTY;
+import static ua.com.foxminded.Constants.FORM;
+import static ua.com.foxminded.Constants.GET_MAP;
+import static ua.com.foxminded.Constants.GROUP;
+import static ua.com.foxminded.Constants.INCOMMING_ERROR;
+import static ua.com.foxminded.Constants.LECTURE;
+import static ua.com.foxminded.Constants.LIST;
+import static ua.com.foxminded.Constants.NAME;
+import static ua.com.foxminded.Constants.POST_MAP;
+import static ua.com.foxminded.Constants.REDIRECT;
+import static ua.com.foxminded.Constants.SAVE_FORM;
+import static ua.com.foxminded.Constants.SAVE_GROUP;
+import static ua.com.foxminded.Constants.SEARCH;
+import static ua.com.foxminded.Constants.UPDATE_FORM;
+import static ua.com.foxminded.Constants._FACULTIES;
+import static ua.com.foxminded.Constants._FACULTY_ID;
+import static ua.com.foxminded.Constants._GROUP;
+import static ua.com.foxminded.Constants._GROUPS;
+import static ua.com.foxminded.Constants._GROUP_ID;
+import static ua.com.foxminded.Constants._LECTURE_ID;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -24,7 +48,7 @@ import ua.com.foxminded.service.StudentService;
 
 @Slf4j
 @Controller
-@RequestMapping("/group")
+@RequestMapping(GROUP)
 @RequiredArgsConstructor
 public class GroupController {
 
@@ -32,160 +56,160 @@ public class GroupController {
 	private final FacultyService facultyService;
 	private final StudentService studentService;
 
-	@GetMapping("/list")
+	@GetMapping(LIST)
 	public String findAll(Model model) {
 
-		log.debug("Get mapping:/group/list");
-		model.addAttribute("groups", groupService.findAll());
+		log.debug(GET_MAP + GROUP + LIST);
+		model.addAttribute(_GROUPS, groupService.findAll());
 
-		return "group/list-groups";
+		return GROUP + LIST;
 	}
 
-	@GetMapping("/formForSave")
+	@GetMapping(SAVE_FORM)
 	public String save(Model model) {
 
-		log.debug("Get mapping:/group/formForSave");
+		log.debug(GET_MAP + GROUP + SAVE_FORM);
 		Group group = new Group();
 		group.setId(null);
 
-		model.addAttribute("group", group);
-		model.addAttribute("faculties", facultyService.findAll());
+		model.addAttribute(_GROUP, group);
+		model.addAttribute(_FACULTIES, facultyService.findAll());
 
-		return "group/group-form";
+		return GROUP + FORM;
 	}
 
-	@GetMapping("/formForUpdate")
-	public String updateGroup(@RequestParam("groupId") Integer id, Model model) {
+	@GetMapping(UPDATE_FORM)
+	public String updateGroup(@RequestParam(_GROUP_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/group/formForUpdate");
+		log.debug(GET_MAP + GROUP + UPDATE_FORM);
 
 		if (id != null) {
-			model.addAttribute("group", groupService.findById(id));
-			model.addAttribute("faculties", facultyService.findAll());
-			return "group/group-form";
+			model.addAttribute(_GROUP, groupService.findById(id));
+			model.addAttribute(_FACULTIES, facultyService.findAll());
+			return GROUP + FORM;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@PostMapping("/addStudent")
-	public String addStudent(@RequestParam("groupId") Integer groupId,
+	public String addStudent(@RequestParam(_GROUP_ID) Integer groupId,
 			@Valid @ModelAttribute("crmObject") CrmObject crmObject, BindingResult theBindingResult,
 			RedirectAttributes redirectAttributes) {
-		log.debug("Post mapping:/group/addStudent");
+		log.debug(POST_MAP + GROUP + "/addStudent");
 
 		if (theBindingResult.hasErrors()) {
-			redirectAttributes.addAttribute("groupId", groupId);
-			return "redirect:/group/details";
+			redirectAttributes.addAttribute(_GROUP_ID, groupId);
+			return REDIRECT + GROUP + DETAILS;
 		}
 		if (groupId != null && crmObject != null) {
 			Integer studentId = crmObject.getId();
 			groupService.addStudent(groupId, studentId);
-			redirectAttributes.addAttribute("groupId", groupId);
-			return "redirect:/group/details";
+			redirectAttributes.addAttribute(_GROUP_ID, groupId);
+			return REDIRECT + GROUP + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/details")
-	public String showDetails(@RequestParam("groupId") Integer id, Model model) {
+	@GetMapping(DETAILS)
+	public String showDetails(@RequestParam(_GROUP_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/group/details");
+		log.debug(GET_MAP + GROUP + DETAILS);
 		if (id != null) {
 			Group group = groupService.findById(id);
-			model.addAttribute("group", group);
+			model.addAttribute(_GROUP, group);
 			model.addAttribute("myFaculty", facultyService.findById(group.getFacultyId()));
 			model.addAttribute("myStudents", studentService.findByGroup(group));
 			model.addAttribute("allStudents", studentService.findAll());
 			model.addAttribute("crmObject", new CrmObject());
-			return "group/group-details";
+			return GROUP + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@PostMapping("/saveGroup")
-	public String saveGroup(@Valid @ModelAttribute("group") Group group, BindingResult theBindingResult, Model model) {
-		log.debug("Post mapping:/group/saveGroup");
+	@PostMapping(SAVE_GROUP)
+	public String saveGroup(@Valid @ModelAttribute(_GROUP) Group group, BindingResult theBindingResult, Model model) {
+		log.debug(POST_MAP + GROUP + SAVE_GROUP);
 
 		if (theBindingResult.hasErrors()) {
-			model.addAttribute("group", group);
-			model.addAttribute("faculties", facultyService.findAll());
-			return "group/group-form";
+			model.addAttribute(_GROUP, group);
+			model.addAttribute(_FACULTIES, facultyService.findAll());
+			return GROUP + FORM;
 		}
 		if (group != null) {
 			groupService.saveOrUpdate(group);
-			return "redirect:/group/list";
+			return REDIRECT + GROUP + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@GetMapping("/delete")
-	public String deleteGroup(@RequestParam("groupId") Integer id) {
+	@GetMapping(DELETE)
+	public String deleteGroup(@RequestParam(_GROUP_ID) Integer id) {
 
-		log.debug("Get mapping:/group/delete");
+		log.debug(GET_MAP + GROUP + DELETE);
 		if (id != null) {
 			groupService.deleteById(id);
-			return "redirect:/group/list";
+			return REDIRECT + GROUP + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/deleteFromFaculty")
-	public String deleteFromFaculty(@RequestParam("groupId") Integer groupId,
-			@RequestParam("facultyId") Integer facultyId, RedirectAttributes redirectAttributes) {
+	public String deleteFromFaculty(@RequestParam(_GROUP_ID) Integer groupId,
+			@RequestParam(_FACULTY_ID) Integer facultyId, RedirectAttributes redirectAttributes) {
 
-		log.debug("Get mapping:/group/deleteFromFaculty");
+		log.debug(GET_MAP + GROUP + "/deleteFromFaculty");
 		if (groupId != null && facultyId != null) {
 			groupService.deleteGroupFromFaculty(groupId);
-			redirectAttributes.addAttribute("facultyId", facultyId);
-			return "redirect:/faculty/details";
+			redirectAttributes.addAttribute(_FACULTY_ID, facultyId);
+			return REDIRECT + FACULTY + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/deleteFromLecture")
-	public String deleteFromLecture(@RequestParam("groupId") Integer groupId,
-			@RequestParam("lectureId") Integer lectureId, RedirectAttributes redirectAttributes) {
+	public String deleteFromLecture(@RequestParam(_GROUP_ID) Integer groupId,
+			@RequestParam(_LECTURE_ID) Integer lectureId, RedirectAttributes redirectAttributes) {
 
-		log.debug("Get mapping:/group/deleteFromLecture");
+		log.debug(GET_MAP + GROUP + "/deleteFromLecture");
 		if (groupId != null && lectureId != null) {
 			groupService.deleteGroupFromLecture(groupId, lectureId);
-			redirectAttributes.addAttribute("lectureId", lectureId);
-			return "redirect:/lecture/details";
+			redirectAttributes.addAttribute(_LECTURE_ID, lectureId);
+			return REDIRECT + LECTURE + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/deleteAll")
+	@GetMapping(DELETE_ALL)
 	public String deleteAll() {
 
-		log.debug("Get mapping:/group/deleteAll");
+		log.debug(GET_MAP + GROUP + DELETE_ALL);
 		groupService.deleteAll();
 
-		return "redirect:/group/list";
+		return REDIRECT + GROUP + LIST;
 	}
 
-	@GetMapping("/search")
-	public String search(@RequestParam("name") String name, Model model) {
+	@GetMapping(SEARCH)
+	public String search(@RequestParam(NAME) String name, Model model) {
 
-		log.debug("Get mapping:/group/search");
+		log.debug(GET_MAP + GROUP + SEARCH);
 		if (name != null && !name.trim().isEmpty()) {
 			List<Group> groups = groupService.searchByName(name);
 			if (groups.isEmpty()) {
-				return "redirect:/group/list";
+				return REDIRECT + GROUP + LIST;
 			} else {
-				model.addAttribute("groups", groups);
-				return "group/list-groups";
+				model.addAttribute(_GROUPS, groups);
+				return GROUP + LIST;
 			}
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 }

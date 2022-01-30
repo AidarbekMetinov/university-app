@@ -18,6 +18,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,6 +49,7 @@ public class Faculty {
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
 			CascadeType.REFRESH })
 	@JoinColumn(name = "faculty_id")
+	@JsonIgnore
 	private List<Group> groups;
 
 	public void add(Group group) {
@@ -62,6 +65,7 @@ public class Faculty {
 	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
 			CascadeType.REFRESH })
 	@JoinTable(name = "faculty_teacher", joinColumns = @JoinColumn(name = "faculty_id"), inverseJoinColumns = @JoinColumn(name = "teacher_id"))
+	@JsonIgnore
 	private List<Teacher> teachers;
 
 	public void add(Teacher teacher) {

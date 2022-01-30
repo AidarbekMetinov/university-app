@@ -17,6 +17,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,10 +43,12 @@ public class Group {
 	@Column(name = "faculty_id")
 	@NotNull(message = "is required")
 	@Min(value = 1, message = "Choose faculty")
+	@JsonIgnore
 	private Integer facultyId;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH })
 	@JoinColumn(name = "group_id")
+	@JsonIgnore
 	private List<Student> students;
 
 	public void add(Student student) {

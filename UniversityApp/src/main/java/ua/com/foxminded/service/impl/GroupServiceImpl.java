@@ -61,6 +61,13 @@ public class GroupServiceImpl implements GroupService {
 				() -> new NotFoundException(format("Groups not found by faculty '%s'", faculty.getName())));
 	}
 
+	@Transactional
+	public List<Group> findByFacultyId(Integer id) {
+		log.debug("Find groups by faculty id = {}", id);
+		return groupDao.findByFacultyId(id)
+				.orElseThrow(() -> new NotFoundException(format("Groups not found by faculty id = '%s'", id)));
+	}
+
 	@Override
 	@Transactional
 	public List<Group> findByLecture(Lecture lecture) {

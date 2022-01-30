@@ -1,5 +1,27 @@
 package ua.com.foxminded.controller;
 
+import static ua.com.foxminded.Constants.DELETE;
+import static ua.com.foxminded.Constants.DELETE_ALL;
+import static ua.com.foxminded.Constants.DETAILS;
+import static ua.com.foxminded.Constants.FORM;
+import static ua.com.foxminded.Constants.GET_MAP;
+import static ua.com.foxminded.Constants.GROUP;
+import static ua.com.foxminded.Constants.INCOMMING_ERROR;
+import static ua.com.foxminded.Constants.LECTURE;
+import static ua.com.foxminded.Constants.LIST;
+import static ua.com.foxminded.Constants.POST_MAP;
+import static ua.com.foxminded.Constants.REDIRECT;
+import static ua.com.foxminded.Constants.SAVE_FORM;
+import static ua.com.foxminded.Constants.SAVE_LECTURE;
+import static ua.com.foxminded.Constants.SEARCH;
+import static ua.com.foxminded.Constants.UPDATE_FORM;
+import static ua.com.foxminded.Constants._AUDIENCES;
+import static ua.com.foxminded.Constants._COURSES;
+import static ua.com.foxminded.Constants._LECTURE;
+import static ua.com.foxminded.Constants._LECTURES;
+import static ua.com.foxminded.Constants._LECTURE_ID;
+import static ua.com.foxminded.Constants._TEACHERS;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +53,7 @@ import ua.com.foxminded.service.TeacherService;
 
 @Slf4j
 @Controller
-@RequestMapping("/lecture")
+@RequestMapping(LECTURE)
 @RequiredArgsConstructor
 public class LectureController {
 
@@ -49,35 +71,35 @@ public class LectureController {
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}
 
-	@GetMapping("/list")
+	@GetMapping(LIST)
 	public String findAll(Model model) {
 
-		log.debug("Get mapping:/lecture/list");
+		log.debug(GET_MAP + LECTURE + LIST);
 		model.addAttribute("dateTime", LocalDateTime.now());
-		model.addAttribute("lectures", lectureService.findAll());
+		model.addAttribute(_LECTURES, lectureService.findAll());
 
-		return "lecture/list-lectures";
+		return LECTURE + LIST;
 	}
 
-	@GetMapping("/formForSave")
+	@GetMapping(SAVE_FORM)
 	public String save(Model model) {
 
-		log.debug("Get mapping:/lecture/formForSave");
+		log.debug(GET_MAP + LECTURE + SAVE_FORM);
 		CrmLecture lecture = new CrmLecture();
 		lecture.setDateTime(LocalDateTime.now().toString());
 
-		model.addAttribute("lecture", lecture);
-		model.addAttribute("audiences", audienceService.findAll());
-		model.addAttribute("teachers", teacherService.findAll());
-		model.addAttribute("courses", courseService.findAll());
+		model.addAttribute(_LECTURE, lecture);
+		model.addAttribute(_AUDIENCES, audienceService.findAll());
+		model.addAttribute(_TEACHERS, teacherService.findAll());
+		model.addAttribute(_COURSES, courseService.findAll());
 
-		return "lecture/lecture-form";
+		return LECTURE + FORM;
 	}
 
-	@GetMapping("/formForUpdate")
-	public String updateLecture(@RequestParam("lectureId") Integer id, Model model) {
+	@GetMapping(UPDATE_FORM)
+	public String updateLecture(@RequestParam(_LECTURE_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/lecture/formForUpdate");
+		log.debug(GET_MAP + LECTURE + UPDATE_FORM);
 		if (id != null) {
 			Lecture persist = lectureService.findById(id);
 			CrmLecture lecture = new CrmLecture();
@@ -87,116 +109,116 @@ public class LectureController {
 			lecture.setCourseId(persist.getCourse().getId());
 			lecture.setDateTime(persist.getDateTime().toString());
 
-			model.addAttribute("lecture", lecture);
-			model.addAttribute("audiences", audienceService.findAll());
-			model.addAttribute("teachers", teacherService.findAll());
-			model.addAttribute("courses", courseService.findAll());
+			model.addAttribute(_LECTURE, lecture);
+			model.addAttribute(_AUDIENCES, audienceService.findAll());
+			model.addAttribute(_TEACHERS, teacherService.findAll());
+			model.addAttribute(_COURSES, courseService.findAll());
 
-			return "lecture/lecture-form";
+			return LECTURE + FORM;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@PostMapping("/addGroup")
-	public String addGroupToLecture(@RequestParam("lectureId") Integer lectureId,
+	public String addGroupToLecture(@RequestParam(_LECTURE_ID) Integer lectureId,
 			@Valid @ModelAttribute("crmObject") CrmObject crmObject, BindingResult theBindingResult,
 			RedirectAttributes redirectAttributes) {
-		log.debug("Get mapping:/lecture/formForUpdate");
+		log.debug(GET_MAP + LECTURE + "/addGroup");
 
 		if (theBindingResult.hasErrors()) {
-			redirectAttributes.addAttribute("lectureId", lectureId);
+			redirectAttributes.addAttribute(_LECTURE_ID, lectureId);
 
-			return "redirect:/lecture/details";
+			return REDIRECT + LECTURE + DETAILS;
 		}
 		if (lectureId != null && crmObject != null) {
 			Integer groupId = crmObject.getId();
 
 			lectureService.addGroupToLecture(lectureId, groupId);
-			redirectAttributes.addAttribute("lectureId", lectureId);
+			redirectAttributes.addAttribute(_LECTURE_ID, lectureId);
 
-			return "redirect:/lecture/details";
+			return REDIRECT + LECTURE + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/details")
-	public String showDetails(@RequestParam("lectureId") Integer id, Model model) {
+	@GetMapping(DETAILS)
+	public String showDetails(@RequestParam(_LECTURE_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/group/details");
+		log.debug(GET_MAP + GROUP + DETAILS);
 		if (id != null) {
 			Lecture lecture = lectureService.findById(id);
-			model.addAttribute("lecture", lecture);
-			model.addAttribute("myGroups", groupService.findByLecture(lecture));
+			model.addAttribute(_LECTURE, lecture);
+			model.addAttribute("myGroups", lecture.getGroups());
 			model.addAttribute("allGroups", groupService.findAll());
 			model.addAttribute("crmObject", new CrmObject());
-			return "lecture/lecture-details";
+			return LECTURE + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@PostMapping("/saveLecture")
-	public String saveLecture(@Valid @ModelAttribute("lecture") CrmLecture lecture, BindingResult theBindingResult,
+	@PostMapping(SAVE_LECTURE)
+	public String saveLecture(@Valid @ModelAttribute(_LECTURE) CrmLecture lecture, BindingResult theBindingResult,
 			Model model) {
-		log.debug("Post mapping:/lecture/saveLecture");
+		log.debug(POST_MAP + LECTURE + SAVE_LECTURE);
 
 		if (theBindingResult.hasErrors()) {
-			model.addAttribute("lecture", lecture);
-			model.addAttribute("audiences", audienceService.findAll());
-			model.addAttribute("teachers", teacherService.findAll());
-			model.addAttribute("courses", courseService.findAll());
+			model.addAttribute(_LECTURE, lecture);
+			model.addAttribute(_AUDIENCES, audienceService.findAll());
+			model.addAttribute(_TEACHERS, teacherService.findAll());
+			model.addAttribute(_COURSES, courseService.findAll());
 
-			return "lecture/lecture-form";
+			return LECTURE + FORM;
 		}
 		if (lecture != null) {
 			lectureService.saveOrUpdate(lecture);
-			return "redirect:/lecture/list";
+			return REDIRECT + LECTURE + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@GetMapping("/delete")
-	public String deleteLecture(@RequestParam("lectureId") Integer id) {
+	@GetMapping(DELETE)
+	public String deleteLecture(@RequestParam(_LECTURE_ID) Integer id) {
 
-		log.debug("Get mapping:/lecture/delete");
+		log.debug(GET_MAP + LECTURE + DELETE);
 		if (id != null) {
 			lectureService.deleteById(id);
-			return "redirect:/lecture/list";
+			return REDIRECT + LECTURE + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@GetMapping("/deleteAll")
+	@GetMapping(DELETE_ALL)
 	public String deleteAll() {
 
-		log.debug("Get mapping:/lecture/deleteAll");
+		log.debug(GET_MAP + LECTURE + DELETE_ALL);
 		lectureService.deleteAll();
 
-		return "redirect:/lecture/list";
+		return REDIRECT + LECTURE + LIST;
 	}
 
-	@GetMapping("/search")
+	@GetMapping(SEARCH)
 	public String search(@RequestParam("dateTime") String dateTime, Model model) {
 
 		LocalDateTime dt = LocalDateTime.parse(dateTime);
 
-		log.debug("Get mapping:/lecture/search");
+		log.debug(GET_MAP + LECTURE + SEARCH);
 		if (dateTime != null) {
 			List<Lecture> lectures = lectureService.findByDate(dt);
 			if (lectures.isEmpty()) {
-				return "redirect:/lecture/list";
+				return REDIRECT + LECTURE + LIST;
 			} else {
-				model.addAttribute("lectures", lectures);
-				return "lecture/list-lectures";
+				model.addAttribute(_LECTURES, lectures);
+				return LECTURE + LIST;
 			}
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 }

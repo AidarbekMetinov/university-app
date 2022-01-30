@@ -1,5 +1,23 @@
 package ua.com.foxminded.controller;
 
+import static ua.com.foxminded.Constants.COURSE;
+import static ua.com.foxminded.Constants.DELETE;
+import static ua.com.foxminded.Constants.DELETE_ALL;
+import static ua.com.foxminded.Constants.FORM;
+import static ua.com.foxminded.Constants.GET_MAP;
+import static ua.com.foxminded.Constants.INCOMMING_ERROR;
+import static ua.com.foxminded.Constants.LIST;
+import static ua.com.foxminded.Constants.NAME;
+import static ua.com.foxminded.Constants.POST_MAP;
+import static ua.com.foxminded.Constants.REDIRECT;
+import static ua.com.foxminded.Constants.SAVE_COURSE;
+import static ua.com.foxminded.Constants.SAVE_FORM;
+import static ua.com.foxminded.Constants.SEARCH;
+import static ua.com.foxminded.Constants.UPDATE_FORM;
+import static ua.com.foxminded.Constants._COURSE;
+import static ua.com.foxminded.Constants._COURSES;
+import static ua.com.foxminded.Constants._COURSE_ID;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,97 +38,97 @@ import ua.com.foxminded.service.CourseService;
 
 @Slf4j
 @Controller
-@RequestMapping("/course")
+@RequestMapping(COURSE)
 @RequiredArgsConstructor
 public class CourseController {
 
 	private final CourseService courseService;
 
-	@GetMapping("/list")
+	@GetMapping(LIST)
 	public String findAll(Model model) {
 
-		log.debug("Get mapping:/course/list");
-		model.addAttribute("courses", courseService.findAll());
+		log.debug(GET_MAP + COURSE + LIST);
+		model.addAttribute(_COURSES, courseService.findAll());
 
-		return "course/list-courses";
+		return COURSE + LIST;
 	}
 
-	@GetMapping("/formForSave")
+	@GetMapping(SAVE_FORM)
 	public String save(Model model) {
 
-		log.debug("Get mapping:/course/formForSave");
+		log.debug(GET_MAP + COURSE + SAVE_FORM);
 		Course course = new Course();
 		course.setId(null);
 
-		model.addAttribute("course", course);
+		model.addAttribute(_COURSE, course);
 
-		return "course/course-form";
+		return COURSE + FORM;
 	}
 
-	@GetMapping("/formForUpdate")
-	public String updateCourse(@RequestParam("courseId") Integer id, Model model) {
+	@GetMapping(UPDATE_FORM)
+	public String updateCourse(@RequestParam(_COURSE_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/course/formForUpdate");
+		log.debug(GET_MAP + COURSE + UPDATE_FORM);
 		if (id != null) {
-			model.addAttribute("course", courseService.findById(id));
-			return "course/course-form";
+			model.addAttribute(_COURSE, courseService.findById(id));
+			return COURSE + FORM;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@PostMapping("/saveCourse")
-	public String saveCourse(@Valid @ModelAttribute("course") Course course, BindingResult theBindingResult,
+	@PostMapping(SAVE_COURSE)
+	public String saveCourse(@Valid @ModelAttribute(_COURSE) Course course, BindingResult theBindingResult,
 			Model model) {
-		log.debug("Post mapping:/course/saveCourse");
+		log.debug(POST_MAP + COURSE + SAVE_COURSE);
 
 		if (theBindingResult.hasErrors()) {
-			model.addAttribute("course", course);
-			return "course/course-form";
+			model.addAttribute(_COURSE, course);
+			return COURSE + FORM;
 		}
 		if (course != null) {
 			courseService.saveOrUpdate(course);
-			return "redirect:/course/list";
+			return REDIRECT + COURSE + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/delete")
-	public String deleteCourse(@RequestParam("courseId") Integer id) {
+	@GetMapping(DELETE)
+	public String deleteCourse(@RequestParam(_COURSE_ID) Integer id) {
 
-		log.debug("Get mapping:/course/delete");
+		log.debug(GET_MAP + COURSE + DELETE);
 		if (id != null) {
 			courseService.deleteById(id);
-			return "redirect:/course/list";
+			return REDIRECT + COURSE + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/deleteAll")
+	@GetMapping(DELETE_ALL)
 	public String deleteAll() {
 
-		log.debug("Get mapping:/course/deleteAll");
+		log.debug(GET_MAP + COURSE + DELETE_ALL);
 		courseService.deleteAll();
 
-		return "redirect:/course/list";
+		return REDIRECT + COURSE + LIST;
 	}
 
-	@GetMapping("/search")
-	public String search(@RequestParam("name") String name, Model model) {
+	@GetMapping(SEARCH)
+	public String search(@RequestParam(NAME) String name, Model model) {
 
-		log.debug("Get mapping:/course/search");
+		log.debug(GET_MAP + COURSE + SEARCH);
 		if (name != null && !name.trim().isEmpty()) {
 			List<Course> courses = courseService.searchByName(name);
 			if (courses.isEmpty()) {
-				return "redirect:/course/list";
+				return REDIRECT + COURSE + LIST;
 			} else {
 				model.addAttribute("courses", courses);
-				return "course/list-courses";
+				return COURSE + LIST;
 			}
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 }

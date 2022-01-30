@@ -1,4 +1,4 @@
-package ua.com.foxminded.controller;
+package ua.com.foxminded.crm;
 
 import java.time.LocalDateTime;
 

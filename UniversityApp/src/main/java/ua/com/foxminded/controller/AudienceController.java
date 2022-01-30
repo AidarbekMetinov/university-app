@@ -1,5 +1,21 @@
 package ua.com.foxminded.controller;
 
+import static ua.com.foxminded.Constants.AUDIENCE;
+import static ua.com.foxminded.Constants.DELETE;
+import static ua.com.foxminded.Constants.DELETE_ALL;
+import static ua.com.foxminded.Constants.FORM;
+import static ua.com.foxminded.Constants.GET_MAP;
+import static ua.com.foxminded.Constants.INCOMMING_ERROR;
+import static ua.com.foxminded.Constants.LIST;
+import static ua.com.foxminded.Constants.POST_MAP;
+import static ua.com.foxminded.Constants.REDIRECT;
+import static ua.com.foxminded.Constants.SAVE_AUDIENCE;
+import static ua.com.foxminded.Constants.SAVE_FORM;
+import static ua.com.foxminded.Constants.UPDATE_FORM;
+import static ua.com.foxminded.Constants._AUDIENCE;
+import static ua.com.foxminded.Constants._AUDIENCES;
+import static ua.com.foxminded.Constants._AUDIENCE_ID;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -18,83 +34,83 @@ import ua.com.foxminded.service.AudienceService;
 
 @Slf4j
 @Controller
-@RequestMapping("/audience")
+@RequestMapping(AUDIENCE)
 @RequiredArgsConstructor
 public class AudienceController {
 
-	private final AudienceService audienceService;
+	private final AudienceService service;
 
-	@GetMapping("/list")
+	@GetMapping(LIST)
 	public String findAll(Model model) {
 
-		log.debug("Get mapping:/audience/list");
-		model.addAttribute("audiences", audienceService.findAll());
+		log.debug(GET_MAP + AUDIENCE + LIST);
+		model.addAttribute(_AUDIENCES, service.findAll());
 
-		return "audience/list-audiences";
+		return AUDIENCE + LIST;
 	}
 
-	@GetMapping("/formForSave")
-	public String save(Model model) {
+	@GetMapping(SAVE_FORM)
+	public String saveForm(Model model) {
 
-		log.debug("Get mapping:/audience/formForSave");
+		log.debug(GET_MAP + AUDIENCE + SAVE_FORM);
 		Audience audience = new Audience();
 		audience.setId(null);
 
-		model.addAttribute("audience", audience);
+		model.addAttribute(_AUDIENCE, audience);
 
-		return "audience/audience-form";
+		return AUDIENCE + FORM;
 	}
 
-	@GetMapping("/formForUpdate")
-	public String updateAudience(@RequestParam("audienceId") Integer id, Model model) {
+	@GetMapping(UPDATE_FORM)
+	public String updateForm(@RequestParam(_AUDIENCE_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/audience/formForUpdate");
+		log.debug(GET_MAP + AUDIENCE + UPDATE_FORM);
 		if (id != null) {
-			model.addAttribute("audience", audienceService.findById(id));
-			return "audience/audience-form";
+			model.addAttribute(_AUDIENCE, service.findById(id));
+			return AUDIENCE + FORM;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@PostMapping("/saveAudience")
-	public String saveAudience(@Valid @ModelAttribute("audience") Audience audience, BindingResult theBindingResult,
+	@PostMapping(SAVE_AUDIENCE)
+	public String saveAudience(@Valid @ModelAttribute(_AUDIENCE) Audience audience, BindingResult theBindingResult,
 			Model model) {
-		log.debug("Post mapping:/audience/saveAudience");
+		log.debug(POST_MAP + AUDIENCE + SAVE_AUDIENCE);
 
 		if (theBindingResult.hasErrors()) {
-			model.addAttribute("audience", audience);
-			return "audience/audience-form";
+			model.addAttribute(_AUDIENCE, audience);
+			return AUDIENCE + FORM;
 		}
 		if (audience != null) {
-			audienceService.saveOrUpdate(audience);
-			return "redirect:/audience/list";
+			service.saveOrUpdate(audience);
+			return REDIRECT + AUDIENCE + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@GetMapping("/delete")
-	public String deleteAudience(@RequestParam("audienceId") Integer id) {
+	@GetMapping(DELETE)
+	public String deleteAudience(@RequestParam(_AUDIENCE_ID) Integer id) {
 
-		log.debug("Get mapping:/audience/delete");
+		log.debug(GET_MAP + AUDIENCE + DELETE);
 		if (id != null) {
-			audienceService.deleteById(id);
-			return "redirect:/audience/list";
+			service.deleteById(id);
+			return REDIRECT + AUDIENCE + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@GetMapping("/deleteAll")
+	@GetMapping(DELETE_ALL)
 	public String deleteAll() {
 
-		log.debug("Get mapping:/audience/deleteAll");
-		audienceService.deleteAll();
+		log.debug(GET_MAP + AUDIENCE + DELETE_ALL);
+		service.deleteAll();
 
-		return "redirect:/audience/list";
+		return REDIRECT + AUDIENCE + LIST;
 	}
 }

@@ -18,7 +18,6 @@ public class DateTimeValidator implements ConstraintValidator<ValidDateTime, Str
 		if (dateTime == null) {
 			return false;
 		}
-
 		matcher = pattern.matcher(dateTime);
 		return matcher.matches();
 	}

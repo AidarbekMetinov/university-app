@@ -1,5 +1,27 @@
 package ua.com.foxminded.controller;
 
+import static ua.com.foxminded.Constants.DELETE;
+import static ua.com.foxminded.Constants.DELETE_ALL;
+import static ua.com.foxminded.Constants.DETAILS;
+import static ua.com.foxminded.Constants.FIRST_NAME;
+import static ua.com.foxminded.Constants.FORM;
+import static ua.com.foxminded.Constants.GET_MAP;
+import static ua.com.foxminded.Constants.GROUP;
+import static ua.com.foxminded.Constants.INCOMMING_ERROR;
+import static ua.com.foxminded.Constants.LAST_NAME;
+import static ua.com.foxminded.Constants.LIST;
+import static ua.com.foxminded.Constants.POST_MAP;
+import static ua.com.foxminded.Constants.REDIRECT;
+import static ua.com.foxminded.Constants.SAVE_FORM;
+import static ua.com.foxminded.Constants.SAVE_STUDENT;
+import static ua.com.foxminded.Constants.STUDENT;
+import static ua.com.foxminded.Constants.UPDATE_FORM;
+import static ua.com.foxminded.Constants._GROUPS;
+import static ua.com.foxminded.Constants._GROUP_ID;
+import static ua.com.foxminded.Constants._STUDENT;
+import static ua.com.foxminded.Constants._STUDENTS;
+import static ua.com.foxminded.Constants._STUDENT_ID;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -25,7 +47,7 @@ import ua.com.foxminded.service.StudentService;
 
 @Slf4j
 @Controller
-@RequestMapping("/student")
+@RequestMapping(STUDENT)
 @RequiredArgsConstructor
 public class StudentController {
 
@@ -40,122 +62,122 @@ public class StudentController {
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}
 
-	@GetMapping("/list")
+	@GetMapping(LIST)
 	public String findAll(Model model) {
 
-		log.debug("Get mapping:/student/list");
-		model.addAttribute("students", studentService.findAll());
+		log.debug(GET_MAP + STUDENT + LIST);
+		model.addAttribute(_STUDENTS, studentService.findAll());
 
-		return "student/list-students";
+		return STUDENT + LIST;
 	}
 
-	@GetMapping("/formForSave")
+	@GetMapping(SAVE_FORM)
 	public String save(Model model) {
 
-		log.debug("Get mapping:/student/formForSave");
+		log.debug(GET_MAP + STUDENT + SAVE_FORM);
 		Student student = new Student();
 		student.setId(null);
 
-		model.addAttribute("student", student);
-		model.addAttribute("groups", groupService.findAll());
+		model.addAttribute(_STUDENT, student);
+		model.addAttribute(_GROUPS, groupService.findAll());
 
-		return "student/student-form";
+		return STUDENT + FORM;
 	}
 
-	@GetMapping("/formForUpdate")
-	public String updateStudent(@RequestParam("studentId") Integer id, Model model) {
+	@GetMapping(UPDATE_FORM)
+	public String updateStudent(@RequestParam(_STUDENT_ID) Integer id, Model model) {
 
-		log.debug("Get mapping:/student/formForUpdate");
+		log.debug(GET_MAP + STUDENT + UPDATE_FORM);
 		if (id != null) {
-			model.addAttribute("student", studentService.findById(id));
-			model.addAttribute("groups", groupService.findAll());
-			return "student/student-form";
+			model.addAttribute(_STUDENT, studentService.findById(id));
+			model.addAttribute(_GROUPS, groupService.findAll());
+			return STUDENT + FORM;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@PostMapping("/saveStudent")
-	public String saveStudent(@Valid @ModelAttribute("student") Student student, BindingResult theBindingResult,
+	@PostMapping(SAVE_STUDENT)
+	public String saveStudent(@Valid @ModelAttribute(_STUDENT) Student student, BindingResult theBindingResult,
 			Model model) {
-		log.debug("Post mapping:/student/saveStudent");
+		log.debug(POST_MAP + STUDENT + SAVE_STUDENT);
 
 		if (theBindingResult.hasErrors()) {
-			model.addAttribute("groups", groupService.findAll());
-			model.addAttribute("student", student);
-			return "student/student-form";
+			model.addAttribute(_GROUPS, groupService.findAll());
+			model.addAttribute(_STUDENT, student);
+			return STUDENT + FORM;
 		}
 		if (student != null) {
 			studentService.saveOrUpdate(student);
-			return "redirect:/student/list";
+			return REDIRECT + STUDENT + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 
 	}
 
-	@GetMapping("/delete")
-	public String deleteStudent(@RequestParam("studentId") Integer id) {
+	@GetMapping(DELETE)
+	public String deleteStudent(@RequestParam(_STUDENT_ID) Integer id) {
 
-		log.debug("Get mapping:/student/delete");
+		log.debug(GET_MAP + STUDENT + DELETE);
 		if (id != null) {
 			studentService.deleteById(id);
-			return "redirect:/student/list";
+			return REDIRECT + STUDENT + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/deleteFromGroup")
-	public String deleteFromGroup(@RequestParam("studentId") Integer studentId,
-			@RequestParam("groupId") Integer groupId, RedirectAttributes redirectAttributes) {
+	public String deleteFromGroup(@RequestParam(_STUDENT_ID) Integer studentId,
+			@RequestParam(_GROUP_ID) Integer groupId, RedirectAttributes redirectAttributes) {
 
-		log.debug("Get mapping:/student/deleteFromGroup");
+		log.debug(GET_MAP + STUDENT + "/deleteFromGroup");
 		if (studentId != null && groupId != null) {
 			studentService.deleteStudentFromGroup(studentId);
-			redirectAttributes.addAttribute("groupId", groupId);
-			return "redirect:/group/details";
+			redirectAttributes.addAttribute(_GROUP_ID, groupId);
+			return REDIRECT + GROUP + DETAILS;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
-	@GetMapping("/deleteAll")
+	@GetMapping(DELETE_ALL)
 	public String deleteAll() {
 
-		log.debug("Get mapping:/student/deleteAll");
+		log.debug(GET_MAP + STUDENT + DELETE_ALL);
 		studentService.deleteAll();
 
-		return "redirect:/student/list";
+		return REDIRECT + STUDENT + LIST;
 	}
 
 	@GetMapping("/searchByFirstName")
-	public String searchByFirstName(@RequestParam("firstName") String name, Model model) {
+	public String searchByFirstName(@RequestParam(FIRST_NAME) String name, Model model) {
 
-		log.debug("Get mapping:/student/search");
+		log.debug(GET_MAP + STUDENT + "/searchByFirstName");
 		if (name != null && !name.trim().isEmpty()) {
-			model.addAttribute("students", studentService.searchByFirstName(name));
-			return "student/list-students";
+			model.addAttribute(_STUDENTS, studentService.searchByFirstName(name));
+			return STUDENT + LIST;
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 
 	@GetMapping("/searchByLastName")
-	public String searchByLastName(@RequestParam("lastName") String name, Model model) {
+	public String searchByLastName(@RequestParam(LAST_NAME) String name, Model model) {
 
-		log.debug("Get mapping:/student/searchByLastName");
+		log.debug(GET_MAP + STUDENT + "/searchByLastName");
 		if (name != null && !name.trim().isEmpty()) {
 			List<Student> students = studentService.searchByLastName(name);
 			if (students.isEmpty()) {
-				return "redirect:/student/list";
+				return REDIRECT + STUDENT + LIST;
 			} else {
-				model.addAttribute("students", students);
-				return "student/list-students";
+				model.addAttribute(_STUDENTS, students);
+				return STUDENT + LIST;
 			}
 		} else {
-			throw new IllegalArgumentException("Incomming are incorrect");
+			throw new IllegalArgumentException(INCOMMING_ERROR);
 		}
 	}
 }

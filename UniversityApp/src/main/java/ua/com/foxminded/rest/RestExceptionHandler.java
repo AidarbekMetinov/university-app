@@ -1,9 +1,9 @@
-package ua.com.foxminded.controller;
+package ua.com.foxminded.rest;
 
 import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -11,10 +11,10 @@ import ua.com.foxminded.crm.ErrorResponse;
 import ua.com.foxminded.exception.NotFoundException;
 
 @ControllerAdvice
-public class RequestExceptionHandler {
+public class RestExceptionHandler {
 
 	@ExceptionHandler
-	public String handleException(NotFoundException exc, Model model) {
+	public ResponseEntity<ErrorResponse> handleException(NotFoundException exc) {
 
 		ErrorResponse error = new ErrorResponse();
 
@@ -22,13 +22,11 @@ public class RequestExceptionHandler {
 		error.setMessage(exc.getMessage());
 		error.setTimeStamp(LocalDateTime.now());
 
-		model.addAttribute("errorResponce", error);
-
-		return "error-page";
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler
-	public String handleException(Exception exc, Model model) {
+	public ResponseEntity<ErrorResponse> handleException(Exception exc) {
 
 		ErrorResponse error = new ErrorResponse();
 
@@ -36,8 +34,6 @@ public class RequestExceptionHandler {
 		error.setMessage(exc.getMessage());
 		error.setTimeStamp(LocalDateTime.now());
 
-		model.addAttribute("errorResponce", error);
-
-		return "error-page";
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 }

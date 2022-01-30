@@ -24,6 +24,7 @@ import ua.com.foxminded.exception.ConnectionException;
 import ua.com.foxminded.exception.UnknownDataAccessException;
 import ua.com.foxminded.service.AudienceService;
 import ua.com.foxminded.service.CourseService;
+import ua.com.foxminded.service.GroupService;
 import ua.com.foxminded.service.TeacherService;
 
 @Slf4j
@@ -45,6 +46,7 @@ public class LectureSpringJdbcDao implements LectureDao {
 	private static final String ADD_GROUP_TO_LECTURE = "INSERT INTO public.group_lecture (group_id, lecture_id) VALUES (?, ?)";
 
 	private final JdbcTemplate jdbcTemplate;
+	private final GroupService groupService;
 	private final CourseService courseService;
 	private final TeacherService teacherService;
 	private final AudienceService audienceService;
@@ -56,6 +58,7 @@ public class LectureSpringJdbcDao implements LectureDao {
 			lecture.setCourse(courseService.findById(rs.getInt("course_id")));
 			lecture.setAudience(audienceService.findById(rs.getInt("audience_id")));
 			lecture.setTeacher(teacherService.findById(rs.getInt("teacher_id")));
+			lecture.setGroups(groupService.findByLecture(lecture));
 			lecture.setDateTime(
 					LocalDateTime.parse(rs.getString("date_time"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 			return lecture;
